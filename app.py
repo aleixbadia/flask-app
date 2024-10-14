@@ -1,26 +1,35 @@
-from flask import Flask, jsonify, Response
-from prometheus_client import Counter, generate_latest
+from flask import Flask, jsonify, request
+import os
+import logging
 
 app = Flask(__name__)
 
-# Existing functionality
-@app.route('/message', methods=['GET'])
-def get_message():
-    data = {"message": "Hello, Cloud Native!"}
-    return jsonify(data)
+# Set up logging
+logging.basicConfig(level=logging.INFO)
 
-# Prometheus metric: Counter for HTTP requests
-request_count = Counter('http_requests_total', 'Total HTTP Requests')
+# Health check endpoint
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify(status="healthy"), 200
 
-@app.route('/')
-def index():
-    request_count.inc()  # Increment the counter for each request
-    return "Hello, World!"
+@app.route('/data', methods=['GET'])
+def get_data():
+    # Simulating data fetching
+    try:
+        param = request.args.get('param', default='default_value', type=str)
+        # Log the request
+        app.logger.info(f"Received request with param: {param}")
 
-# Prometheus metrics endpoint
-@app.route('/metrics')
-def metrics():
-    return Response(generate_latest(), mimetype='text/plain')
+        # Simulated data response
+        response_data = {"data": f"Data fetched with param: {param}"}
+        return jsonify(response_data), 200
+
+    except Exception as e:
+        app.logger.error(f"Error occurred: {e}")
+        return jsonify(error=str(e)), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # Use the port from environment variables or default to 5000
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+
