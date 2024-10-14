@@ -1,0 +1,10 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/cloud-native-project-438403/flask-app:v1', '.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/cloud-native-project-438403/flask-app:v1']
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['apply', '-f', 'deployment.yaml']
+options:
+  logging: CLOUD_LOGGING_ONLY
+serviceAccount: aleix.284@gmail.com
