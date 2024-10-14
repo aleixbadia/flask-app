@@ -30,7 +30,7 @@ cd flask-app
 ```
 Create and Activate Conda Environment:
 ```python
-conda create -n cloud_native_project python=3.10
+conda env create -f environment.yml
 conda activate cloud_native_project
 ```
 Install Required Packages:
