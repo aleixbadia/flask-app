@@ -7,6 +7,10 @@ app = Flask(__name__)
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 
+@app.route('/')
+def hello():
+    return jsonify(message="Hello, World! This is your Flask API.")
+
 # Health check endpoint
 @app.route('/health', methods=['GET'])
 def health():
