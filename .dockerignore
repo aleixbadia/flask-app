@@ -1,0 +1,16 @@
+# Ignore Python cache files
+__pycache__
+*.pyc
+*.pyo
+
+# Ignore Jupyter notebooks
+*.ipynb
+
+# Ignore the virtual environment directory (if any)
+env/
+venv/
+
+# Ignore large files or unnecessary directories
+*.log
+*.txt
+*.md
